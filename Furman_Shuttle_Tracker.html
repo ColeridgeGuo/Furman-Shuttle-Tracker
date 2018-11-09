@@ -1,62 +1,66 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>Furman Shuttle Tracker</title>
-		<meta name="viewport" content="initial-scale=1.0">
-		<meta charset="utf-8">
-		<style>
-			/* Always set the map height explicitly to define the size of the div
-			 * element that contains the map. */
-			#header {
-				float: top;
-				height: 10%;
-			}
-			#map {
-				height: 85%;
-				margin-left: 100;
-			}
-			#filter {
-				float: left;
-			}
-			/* Optional: Makes the sample page fill the window. */
-			html, body {
-				height: 100%;
-				margin: 20;
-				padding: 20;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="header">
-			<h1>Furman Shuttle Tracker</h1>
-		</div>
-		<div id="filter">
-			<input type="text" id="myInput"
-			" placeholder="Search for names..">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <title>Furman Shuttle Tracker</title>
+    <style>
+      #header {
+        height: 10%;
+      }
+      #map {
+        height: 85%;
+        margin-left: 100px;
+      }
+      #filter {
+        float: left;
 
-			<ul id="myUL">
-				<li><a href="#">Adele</a></li>
-				<li><a href="#">Agnes</a></li>
+      }
+      #filterList {
+        list-style-type: none;
+      }
+      html, body {
+        height: 100%;
+        margin: 20px;
+        padding: 20px;
+      }
+    </style>
+  </head>
 
-				<li><a href="#">Billy</a></li>
-				<li><a href="#">Bob</a></li>
+  <body>
+    <div>
+      <nav>
+        <img src="">
+      </nav>
+      <h1>Furman Shuttle Tracker</h1>
+    </div>
 
-				<li><a href="#">Calvin</a></li>
-				<li><a href="#">Christina</a></li>
-				<li><a href="#">Cindy</a></li>
-			</ul>
-		</div>
-		<div id="map"></div>
-		<script>
-					var map;
-					function initMap() {
-						map = new google.maps.Map(document.getElementById('map'), {
-							center: {lat: 34.924459, lng: -82.438726},
-							zoom: 15
-						});
-					}
-				</script>
-				<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABK3DsKer5m90lhENpsR-16mWZ5D-2NNA&callback=initMap"
-				async defer></script>
-	</body>
+    <div id="filter">
+      <ul id="filterList">
+        <li><input type="checkbox" id="MS" checked="checked">
+          Morning Shuttle</li>
+        <li><input type="checkbox" id="WS" checked="checked">
+          Walmart Shuttle</li>
+        <li><input type="checkbox" id="DT" checked="checked">
+          Downtown Trolley</li>
+        <li><input type="checkbox" id="SR" checked="checked">
+          SafeRide</li>
+      </ul>
+    </div>
+
+    <div id="map"></div>
+    <script>
+      var map;
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 34.924459, lng: -82.438726},
+          zoom: 15
+        });
+      }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABK3DsKer5m90lhENpsR-16mWZ5D-2NNA&callback=initMap" async defer>
+  </script>
+  </body>
 </html>
