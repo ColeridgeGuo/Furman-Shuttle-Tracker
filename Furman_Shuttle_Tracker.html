@@ -3,64 +3,173 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0">
+    <script src="jquery-3.3.1.js"></script>
     <title>Furman Shuttle Tracker</title>
     <style>
       #header {
+        float: top;
         height: 10%;
       }
       #map {
         height: 85%;
-        margin-left: 100px;
+        width: 80%;
+        padding: 20px;
       }
-      #filter {
+      #filter_div {
         float: left;
-
+        margin: 20px;
       }
-      #filterList {
-        list-style-type: none;
+      #schedule {
+        float: left;
+        margin: 20px;
+        position: absolute;
+        bottom: 8px;
+        left: 16px;
+        font-size: 13px;
       }
       html, body {
-        height: 100%;
-        margin: 20px;
-        padding: 20px;
+        height: 95%;
       }
     </style>
   </head>
 
   <body>
-    <div>
-      <nav>
-        <img src="">
-      </nav>
+    <div id="header">
       <h1>Furman Shuttle Tracker</h1>
     </div>
 
-    <div id="filter">
-      <ul id="filterList">
-        <li><input type="checkbox" id="MS" checked="checked">
-          Morning Shuttle</li>
-        <li><input type="checkbox" id="WS" checked="checked">
-          Walmart Shuttle</li>
-        <li><input type="checkbox" id="DT" checked="checked">
-          Downtown Trolley</li>
-        <li><input type="checkbox" id="SR" checked="checked">
-          SafeRide</li>
-      </ul>
+    <div id="filter_div">
+      <input type="checkbox" id="Morning Shuttle" checked="checked"
+             onclick="clickBox(this,'Morning Shuttle')">
+      Morning Shuttle
+      <br><br>
+      <input type="checkbox" id="Walmart Shuttle" checked="checked"
+             onclick="clickBox(this,'Walmart Shuttle')">
+      Walmart Shuttle
+      <br><br>
+      <input type="checkbox" id="Downtown Trolley" checked="checked"
+             onclick="clickBox(this,'Downtown Trolley')">
+      Downtown Trolley
+      <br><br>
+      <input type="checkbox" id="SafeRide" checked="checked"
+             onclick="clickBox(this,'SafeRide')">
+      SafeRide
+    </div>
+
+    <div id="schedule">
+      <h3>Daytime Shuttle</h3>
+      Monday - Friday<br>
+      7:30 AM to 11:30 AM<br>
+      1:00 PM to 4:00 PM<br>
+      Fixed-route<br>
+
+      <h3>SafeRide</h3>
+      7 days a week<br>
+      7:00 PM to 1:00 AM<br>
+      TEL: 864-772-0007<br>
+
+      <h3>Downtown Trolley</h3>
+      Friday and Saturday<br>
+      10:00 PM to 2:00 AM<br>
+
+      <h3>Walmart Shuttle</h3>
+      Tuesday<br>
+      6:00 PM to 9:00 PM<br>
+
+      <h3>Furman ID required.</h3>
+    </div>
+    <div id="links">
+      Click <a href="https://www.furman.edu/university-police/saferide-shuttle/">here</a>
+      for further shuttle information and holiday/weather updates
     </div>
 
     <div id="map"></div>
     <script>
       var map;
+      var markers = [];
 
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 34.924459, lng: -82.438726},
-          zoom: 15
+      // Create the marker and push it to the markers array
+      function createMarker(latlng,type) {
+
+        // Create the marker
+        var marker = new google.maps.Marker({
+          position: latlng,
+          map: map,
+          title: type,
         });
+
+        // Store the category and name info as a marker properties
+        marker.mytype = type;
+
+        markers.push(marker);
+      } // end createMarker
+
+      // When a checkbox is checked, show the marker of the shuttle;
+      // when a checkbox is unchecked, hide the marker of the shuttle
+      function clickBox(box, type){
+        if (box.checked) {
+          showMarkers(type);
+        } else {
+          hideMarkers(type);
+        }
+      }
+
+      // Show the marker of a particular transportation
+      function showMarkers(type) {
+        for (var i=0; i<markers.length; i++) {
+          if (markers[i].mytype === type) {
+            markers[i].setVisible(true);
+          }
+        }
+        // check the checkbox
+        document.getElementById(type).checked = true;
+      }
+
+      // Hide the marker of a particular transportation
+      function hideMarkers(type) {
+        for (var i=0; i<markers.length; i++) {
+          if (markers[i].mytype === type) {
+            markers[i].setVisible(false);
+          }
+        }
+        // clear the checkbox
+        document.getElementById(type).checked = false;
+      }
+
+      // Initialize the map and the markers
+      function initMap() {
+        var map_center = new google.maps.LatLng(34.924459, -82.438726);
+        var map_options = {
+          zoom: 15,
+          center: map_center
+        };
+        var map_document = document.getElementById('map');
+        map = new google.maps.Map(map_document, map_options);
+
+        $(document).ready(function(){
+          $.getJSON('shuttles.json', function(data) {
+            for (var i = 0; i < data.length; i++) {
+              // obtain the attributes of each marker
+              var item = data[i];
+              var point = new google.maps.LatLng(item.Latitude, item.Longitude);
+              var type = item.type;
+              // create the marker
+              var marker = createMarker(point,type);
+            }
+
+            // show all shuttles initially
+            showMarkers("Morning Shuttle");
+            showMarkers("Walmart Shuttle");
+            showMarkers("Downtown Trolley");
+            showMarkers("SafeRide");
+
+          });
+        });
+
       }
     </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABK3DsKer5m90lhENpsR-16mWZ5D-2NNA&callback=initMap" async defer>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEAgeJ1xHM6T3kNfaZ_dM9XXnzWdslgS8&callback=initMap" async defer>
   </script>
   </body>
 </html>

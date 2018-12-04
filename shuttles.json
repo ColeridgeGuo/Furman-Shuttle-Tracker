@@ -1,0 +1,17 @@
+[{
+	"type": "Morning Shuttle",
+	"Longitude": -82.438669,
+	"Latitude": 34.924416
+}, {
+	"type": "Walmart Shuttle",
+	"Longitude": -82.431014,
+	"Latitude": 34.960161
+}, {
+	"type": "Downtown Trolley",
+	"Longitude": -82.3982716,
+	"Latitude": 34.8515676
+}, {
+	"type": "SafeRide",
+	"Longitude": -82.436450,
+	"Latitude": 34.930078
+}]
